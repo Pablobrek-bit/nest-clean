@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:3000
+@authToken = {{authenticate.response.body.accessToken}}
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+    "name": "Pablo",
+    "email": "pablo@example.com",
+    "password": "securePassword123"
+}
+
+### 
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+    "email": "pablo@example.com",
+    "password": "securePassword123"
+}
+
+### 
+# @name create_question
+POST {{baseUrl}}/questions
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "title": "How to implement authentication in NestJS? 1 ",
+    "content": "I am looking for best practices to implement authentication in a NestJS application. Any suggestions? 1"
+}
+
+### 
+# @name fetch_recent_questions
+GET {{baseUrl}}/questions
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
