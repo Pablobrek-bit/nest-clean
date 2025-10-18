@@ -33,8 +33,6 @@ export default [
           varsIgnorePattern: '^_',
         },
       ],
-      // Mantenha a configuração simples: permita any e tipo {} quando necessário
-      '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-empty-object-type': 'off',
     },
   },
