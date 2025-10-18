@@ -5,7 +5,7 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { CurrentUser } from '../../auth/current-user-decorator';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { TokenPayload } from '../../auth/jwt.strategy';
-import { PrismaService } from '../../database/prisma/prisma.service';
+import { CreateQuestionUseCase } from '../../../domain/forum/application/use-cases/create-question';
 
 const createQuestionBodySchema = z.object({
   title: z.string(),
@@ -17,7 +17,7 @@ export type CreateQuestionBody = z.infer<typeof createQuestionBodySchema>;
 @Controller('/questions')
 @UseGuards(JwtAuthGuard)
 export class CreateQuestionController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private createQuestion: CreateQuestionUseCase) {}
 
   @Post()
   async handle(
@@ -28,17 +28,12 @@ export class CreateQuestionController {
     const { content, title } = body;
     const userId = user.sub;
 
-    const slug = this.createSlug(title);
-
-    await this.prisma.question.create({
-      data: {
-        title,
-        content,
-        slug,
-        authorId: userId,
-      },
+    await this.createQuestion.execute({
+      title,
+      content,
+      authorId: userId,
+      attachmentsIds: [],
     });
-    return 'ok';
   }
 
   private createSlug(title: string): string {

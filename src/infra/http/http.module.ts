@@ -3,7 +3,9 @@ import { AuthenticateController } from './controllers/authenticate-controller';
 import { CreateAccountController } from './controllers/create-account.controller';
 import { CreateQuestionController } from './controllers/create-question.controller';
 import { FetchRecentQuestionsController } from './controllers/fetch-recent-questions.controller';
-import { DatabaseModule } from '@faker-js/faker/.';
+import { DatabaseModule } from '../database/database.module';
+import { CreateQuestionUseCase } from '../../domain/forum/application/use-cases/create-question';
+import { FetchRecentQuestionsUseCase } from '../../domain/forum/application/use-cases/fetch-recent-questions';
 
 @Module({
   controllers: [
@@ -13,5 +15,6 @@ import { DatabaseModule } from '@faker-js/faker/.';
     FetchRecentQuestionsController,
   ],
   imports: [DatabaseModule],
+  providers: [CreateQuestionUseCase, FetchRecentQuestionsUseCase],
 })
 export class HttpModule {}
