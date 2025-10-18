@@ -1,0 +1,53 @@
+import { INestApplication } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+import request from 'supertest';
+import { hash } from 'bcryptjs';
+import { JwtService } from '@nestjs/jwt';
+import { AppModule } from '../../app.module';
+import { PrismaService } from '../../prisma/prisma.service';
+
+describe('Create question (E2E)', () => {
+  let app: INestApplication;
+  let prisma: PrismaService;
+  let jwt: JwtService;
+
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleRef.createNestApplication();
+
+    prisma = moduleRef.get(PrismaService);
+    jwt = moduleRef.get(JwtService);
+
+    await app.init();
+  });
+
+  test('[POST] /questions', async () => {
+    const user = await prisma.user.create({
+      data: {
+        name: 'Test User',
+        email: 'test@gmail.com',
+        password: await hash('password', 6),
+      },
+    });
+
+    const accessToken = jwt.sign({ sub: user.id });
+
+    const response = await request(app.getHttpServer())
+      .post('/questions')
+      .send({
+        title: 'Test Question',
+        content: 'This is a test question',
+      })
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const questionOnDB = await prisma.question.findFirst({
+      where: { title: 'Test Question' },
+    });
+
+    expect(questionOnDB).toBeDefined();
+    expect(response.status).toBe(201);
+  });
+});

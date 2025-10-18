@@ -1,10 +1,9 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { AppModule } from '../infra/app.module';
 import request from 'supertest';
-import { response } from 'express';
-import { PrismaService } from '../infra/prisma/prisma.service';
 import { hash } from 'bcryptjs';
+import { AppModule } from '../../app.module';
+import { PrismaService } from '../../prisma/prisma.service';
 
 describe('Create account (E2E)', () => {
   let app: INestApplication;
