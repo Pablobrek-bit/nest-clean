@@ -28,6 +28,7 @@
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "^6.16.3",
     "bcryptjs": "^3.0.2",
+    "dayjs": "^1.11.18",
     "passport-jwt": "^4.0.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
@@ -61,7 +62,9 @@
     "typescript": "^5.7.3",
     "unplugin-swc": "^1.5.7",
     "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.4",
+    "@typescript-eslint/eslint-plugin": "^6.3.0",
+    "@typescript-eslint/parser": "^6.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
